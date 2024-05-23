@@ -3,11 +3,12 @@ class Collection < ApplicationRecord
   has_many :items, dependent: :destroy
   
 
-  enum topic: [:books, :signs, :silverware, :other] # Define enum for topic/category
-
+    enum topic: { books: 0, signs: 1, silverware: 2, others: 3 }
+ 
+  
   # Validation for topic
   validates :topic, presence: true, inclusion: { in: Collection.topics.keys }
-  serialize :custom_fields, Hash
+
 
   before_save :initialize_custom_fields
   # Serialize custom fields to JSON when saving to the database

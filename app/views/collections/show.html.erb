@@ -15,6 +15,7 @@
   </div>
 
   <!-- List of items -->
+  <%= debug @collection.custom_fields %>
   <h2 class="mt-4">Items in this collection</h2>
   <ul class="list-group">
      <% @collection.items.each do |item| %>
