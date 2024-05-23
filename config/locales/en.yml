@@ -26,6 +26,11 @@
 #     en:
 #       "yes": yup
 #       enabled: "ON"
-
+en:
+  layouts:
+    language_switcher:
+      language: "Language"
+      en: "English"
+      fr: "Français"
 en:
   hello: "Hello world"

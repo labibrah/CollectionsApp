@@ -1,0 +1,9 @@
+# config/locales/fr.yml
+en:
+  layouts:
+    language_switcher:
+      language: "Language"
+      en: "English"
+      fr: "Français"
+fr:
+  hello: "Bonjour tout le monde !"

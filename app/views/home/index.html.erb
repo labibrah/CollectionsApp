@@ -1,0 +1,143 @@
+<!-- app/views/home/index.html.erb -->
+<%# /*The code here allows to make a collection. clicking on collection takes you to collection path in collections->show   */ %>
+<style>
+  /* Style for the file input button */
+  .custom-file-input {
+    color: transparent;
+    width: 0;
+  }
+
+  /* Style for the custom file input button */
+  .custom-file-label {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+
+  /* Style for the feedback message */
+  #image-feedback {
+    display: none;
+    margin-top: 0.5rem;
+    color: #28a745;
+    font-size: 0.875rem;
+  }
+
+.thumbnail-container {
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+  display: flex;
+  justify-content: center; /* Horizontally center the image */
+  align-items: center; /* Vertically center the image */
+}
+
+.thumbnail-image {
+  max-width: 100%; /* Ensure the image doesn't exceed the container's width */
+  max-height: 100%; /* Ensure the image doesn't exceed the container's height */
+}
+
+</style>
+
+<div class="container">
+  <h1>Create a New Collection</h1>
+
+  <%= form_with(model: @collection, url: create_collection_path, method: :post, class: "mt-4", id: "collection-form") do |form| %>
+    <div class="mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_area :description, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :topic, class: "form-label" %>
+      <%= form.select :topic, Collection.topics.keys, {}, class: "form-select" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :image, class: "form-label" %>
+      <div class="input-group">
+        <%= form.file_field :image, class: "custom-file-input", id: "image-input" %>
+        <label class="custom-file-label" for="image-input">Choose file</label>
+      </div>
+      <div id="image-feedback">
+        <i class="fas fa-check-circle"></i> Image uploaded successfully
+      </div>
+    </div>
+
+    <!-- Add fields for custom fields and image as needed -->
+    
+    <h3>Custom Fields</h3>
+    <div id="custom-fields">
+      <div class="custom-field mb-3">
+        <%= form.label "Field Name", class: "form-label" %>
+        <%= text_field_tag 'custom_fields[][name]', nil, class: "form-control" %>
+
+        <%= form.label "Field Type", class: "form-label mt-2" %>
+        <%= select_tag 'custom_fields[][type]', 
+            options_for_select([['Integer', 'integer'], ['String', 'string'], ['Text', 'text'], ['Boolean', 'boolean'], ['Date', 'date']]), 
+            class: "form-select" %>
+
+        <%= link_to 'Remove Field', '#', class: "btn btn-danger mt-2 remove-custom-field" %>
+      </div>
+    </div>
+    <%= link_to 'Add Custom Field', '#', class: "btn btn-primary mt-2", id: "add-custom-field" %>
+
+
+    <div class="mt-3">
+      <%= form.submit 'Create Collection', class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <h2 class="mt-4">Your Collections</h2>
+  <ul class="list-group">
+<% @collections.each do |collection| %>
+  <li class="list-group-item">
+    <%# Display the collection name from path in collections index controller collections#show %>
+    
+    <%= link_to collection.name, collection_path(locale: I18n.locale,  id: collection.id, collection_id: collection.id) %>
+
+    <%# Display the image if the URL is present %>
+    <% if collection.image.present? %>
+      <div class="thumbnail-container">
+  <img src="<%= collection.image %>" alt="Collection Image" class="thumbnail-image">
+</div>
+
+    <% end %>
+  </li>
+<% end %>
+  </ul>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      // Add custom field
+    document.getElementById("add-custom-field").addEventListener("click", function(event) {
+      event.preventDefault();
+      var customFields = document.getElementById("custom-fields");
+      var newField = document.querySelector(".custom-field").cloneNode(true);
+      newField.querySelector("input").value = "";
+      newField.querySelector("select").selectedIndex = 0;
+      customFields.appendChild(newField);
+    });
+
+
+ // Remove custom field
+    document.getElementById("custom-fields").addEventListener("click", function(event) {
+      if (event.target.classList.contains("remove-custom-field")) {
+        event.preventDefault();
+        event.target.closest(".custom-field").remove();
+      }
+    });
+    // Listen for change event on file input
+    document.getElementById("image-input").addEventListener("change", function() {
+      // Show feedback message and change icon when file is selected
+      document.getElementById("image-feedback").style.display = "block";
+    });
+  });
+</script>

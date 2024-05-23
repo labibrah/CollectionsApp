@@ -49,6 +49,15 @@ gem "bootsnap", require: false
 
 gem "figaro"
 
+gem "bootstrap"
+
+gem "sassc-rails"
+
+gem 'i18n', '~> 1.8'
+
+gem 'httparty'
+
+gem 'font-awesome-rails'
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
@@ -75,3 +84,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "devise", "~> 4.9"
+
+gem "tailwindcss-rails", "~> 2.6"
