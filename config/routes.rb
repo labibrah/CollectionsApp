@@ -38,7 +38,7 @@ Rails.application.routes.draw do
 
   end
   resources :collections do
-    resources :items, only: [:new, :create]
+    resources :items
   end
 
 end

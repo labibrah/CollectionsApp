@@ -43,6 +43,7 @@ class CollectionsController < ApplicationController
 
   # DELETE /collections/1
   def destroy
+    @collection = Collection.find(params[:id])
     @collection.destroy
     redirect_to root_path, notice: 'Collection was successfully destroyed.'
   end
@@ -51,11 +52,11 @@ class CollectionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_collection
       puts params.inspect
-      @collection = Collection.find(params[:collection_id])
+      @collection = Collection.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def collection_params
-      params.require(:collection).permit(:name, :description, :topic)
+      params.require(:collection).permit(:name, :description, :topic, :image, custom_fields: {})
     end
 end

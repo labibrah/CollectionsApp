@@ -9,4 +9,7 @@
   "browserslist": [
     "defaults"
   ]
+  "scripts": {
+    "build": "webpack"
+  }
 }

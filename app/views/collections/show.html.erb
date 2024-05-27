@@ -9,7 +9,7 @@
 
   <!-- Links for managing items -->
   <div class="mt-3">
-   <%= link_to "Add Item", new_collection_item_path(locale: I18n.locale, collection_id: @collection.id), class: "btn btn-primary" %>
+   <%= link_to "Add Item", new_collection_item_path(@collection, locale: I18n.locale, collection_id: @collection.id), class: "btn btn-primary" %>
 
   
   </div>
@@ -21,11 +21,15 @@
      <% @collection.items.each do |item| %>
     <li>
       <h3><%= item.name %></h3>
-      <% (@collection.custom_fields || {}).each do |field_name, field_type| %>
-        <p><%= field_name.humanize %>: <%= item[field_name] %></p>
-      <% end %>
+
+      <% if  @collection.custom_fields.present? %>
+      <% custom_fields = JSON.parse(@collection.custom_fields) %>
+  <% custom_fields.each do |field_name, field_type| %>
+    <p><strong><%= field_name %>:</strong> <%= field_type %></p>
+  <% end %>
+<% end %>
     </li>
   <% end %>
   </ul>
 </div>
-<%= link_to "Delete Collection", collections_destroy_path(collection_id: @collection, locale: I18n.locale), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+<%= link_to "Delete Collection", collections_destroy_path(@collection, locale: I18n.locale, id: params[:collection_id]), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
