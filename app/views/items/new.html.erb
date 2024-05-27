@@ -1,28 +1,27 @@
-<%= form_with(model: [@collection, @item], url: collection_items_path(@collection,locale: I18n.locale, collection_id: @collection.id,hello: 'World'), method: :post) do |form| %>
+<%= form_with(model: [@collection, @item], url: collection_items_path(@collection, locale: I18n.locale), method: :post) do |form| %>
   <div class="form-group">
     <%= form.label :name %>
     <%= form.text_field :name, class: "form-control" %>
   </div>
-  <!-- Add fields for other item attributes here -->
 
-<% custom_fields = JSON.parse(@collection.custom_fields) %>
-<% custom_fields.each do |field_name, field_type| %>
-  <div class="field">
-    <%= form.label field_name.humanize %>
-    <% case field_type
-    when 'integer' %>
-      <%= form.number_field field_name %>
-    <% when 'string' %>
-      <%= form.text_field field_name %>
-    <% when 'text' %>
-      <%= form.text_area field_name %>
-    <% when 'boolean' %>
-      <%= form.check_box field_name %>
-    <% when 'date' %>
-      <%= form.date_field field_name %>
-    <% end %>
-  </div>
-<% end %>
+  <% custom_fields = JSON.parse(@collection.custom_fields) %>
+  <% custom_fields.each do |field_name, field_type| %>
+    <div class="field">
+      <%= form.label field_name.humanize %>
+      <% case field_type
+      when 'integer' %>
+        <%= form.number_field "item[custom_fields][#{field_name}]", class: "form-control" %>
+      <% when 'string' %>
+        <%= form.text_field "item[custom_fields][#{field_name}]", class: "form-control" %>
+      <% when 'text' %>
+        <%= form.text_area "item[custom_fields][#{field_name}]", class: "form-control" %>
+      <% when 'boolean' %>
+        <%= form.check_box "item[custom_fields][#{field_name}]" %>
+      <% when 'date' %>
+        <%= form.date_field "item[custom_fields][#{field_name}]", class: "form-control" %>
+      <% end %>
+    </div>
+  <% end %>
 
   <%= form.submit "Add Item", class: "btn btn-primary" %>
 <% end %>

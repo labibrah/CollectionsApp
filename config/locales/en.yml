@@ -31,6 +31,8 @@ en:
     language_switcher:
       language: "Language"
       en: "English"
-      fr: "Français"
-en:
-  hello: "Hello world"
+      fr: "French"
+  home: "Home"
+  search: "Search"
+  logout: "Logout"
+  dark_mode: "Dark Mode"

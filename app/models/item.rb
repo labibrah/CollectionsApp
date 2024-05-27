@@ -4,4 +4,5 @@ class Item < ApplicationRecord
   has_many :likes
 
   # serialize :tags, Array # Store tags as an array
+
 end

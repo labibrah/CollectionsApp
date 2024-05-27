@@ -1,9 +1,11 @@
 # config/locales/fr.yml
-en:
+fr:
   layouts:
     language_switcher:
-      language: "Language"
-      en: "English"
+      language: "Langue"
+      en: "Anglais"
       fr: "Français"
-fr:
-  hello: "Bonjour tout le monde !"
+  home: "Accueil"
+  search: "Recherche"
+  logout: "Déconnexion"
+  dark_mode: "Mode Sombre"
