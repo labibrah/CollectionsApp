@@ -6,7 +6,7 @@ class ItemsController < ApplicationController
   end
 
   def create
-    puts params.inspect
+    puts params.inspect  # For debugging
     @item = @collection.items.build(item_params)
     if @item.save
       redirect_to collection_path(locale: I18n.locale, id: params[:collection_id]), notice: "Item was successfully created."
@@ -41,19 +41,6 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:name, :description, custom_fields: {}).tap do |whitelisted|
-      whitelisted[:custom_fields] = process_custom_fields(params[:item][:custom_fields]) if params[:item][:custom_fields]
-    end
-  end
-
-  def process_custom_fields(custom_fields)
-    custom_fields.transform_values do |value|
-      case value
-      when "0", "1"
-        value == "1"
-      else
-        value
-      end
-    end
+    params.require(:item).permit(:name, :description, custom_fields: {})
   end
 end

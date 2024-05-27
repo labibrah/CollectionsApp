@@ -1,27 +1,48 @@
-<%= form_with(model: [@collection, @item], url: collection_items_path(@collection, locale: I18n.locale), method: :post) do |form| %>
+<%= form_with(model: [@collection, @item], url: collection_items_path(@collection, locale: I18n.locale), method: :post, html: { class: 'needs-validation', novalidate: true }) do |form| %>
   <div class="form-group">
     <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+    <div class="invalid-feedback">
+      Please provide a name.
+    </div>
   </div>
 
   <% custom_fields = JSON.parse(@collection.custom_fields) %>
   <% custom_fields.each do |field_name, field_type| %>
-    <div class="field">
+    <div class="form-group">
       <%= form.label field_name.humanize %>
       <% case field_type
       when 'integer' %>
-        <%= form.number_field "item[custom_fields][#{field_name}]", class: "form-control" %>
+        <%= text_field_tag "item[custom_fields][#{field_name}]", nil, class: "form-control", required: true, type: "number", step: "1", min: "0", oninput: "this.setCustomValidity('')", oninvalid: "this.setCustomValidity('Please enter a valid integer')" %>
+        <div class="invalid-feedback">
+          Please provide a valid integer for <%= field_name.humanize %>.
+        </div>
       <% when 'string' %>
-        <%= form.text_field "item[custom_fields][#{field_name}]", class: "form-control" %>
+        <%= text_field_tag "item[custom_fields][#{field_name}]", nil, class: "form-control", required: true, pattern: "[A-Za-z]+", oninput: "this.setCustomValidity('')", oninvalid: "this.setCustomValidity('Please enter a valid string')" %>
+        <div class="invalid-feedback">
+          Please provide a valid string for <%= field_name.humanize %>.
+        </div>
       <% when 'text' %>
-        <%= form.text_area "item[custom_fields][#{field_name}]", class: "form-control" %>
+        <%= text_area_tag "item[custom_fields][#{field_name}]", nil, class: "form-control", required: true, oninput: "this.setCustomValidity('')", oninvalid: "this.setCustomValidity('Please enter valid text')" %>
+        <div class="invalid-feedback">
+          Please provide valid text for <%= field_name.humanize %>.
+        </div>
       <% when 'boolean' %>
-        <%= form.check_box "item[custom_fields][#{field_name}]" %>
+        <div class="form-check">
+          <%= check_box_tag "item[custom_fields][#{field_name}]", "1", false, class: "form-check-input", id: field_name %>
+          <%= form.label field_name.humanize, class: "form-check-label", for: field_name %>
+        </div>
       <% when 'date' %>
-        <%= form.date_field "item[custom_fields][#{field_name}]", class: "form-control" %>
+        <%= date_field_tag "item[custom_fields][#{field_name}]", nil, class: "form-control", required: true, oninput: "this.setCustomValidity('')", oninvalid: "this.setCustomValidity('Please enter a valid date')" %>
+        <div class="invalid-feedback">
+          Please provide a valid date for <%= field_name.humanize %>.
+        </div>
       <% end %>
     </div>
   <% end %>
 
   <%= form.submit "Add Item", class: "btn btn-primary" %>
 <% end %>
+
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid
